@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "store",  # dev_1
     "debug_toolbar",  # dev_1
+    "accounts",  # dev_7
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,9 @@ import os
 # http://127.0.0.1:8000/media/파일경로
 MEDIA_URL = "media/"  # ex) /media/photo1.png
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# dev_7
+# 로그인 성공후 이동하는 URL
+LOGIN_REDIRECT_URL = "/"
+# 로그아웃 성공 시 자동으로 이동할 URL
+LOGOUT_REDIRECT_URL = "/"

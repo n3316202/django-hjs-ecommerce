@@ -3,7 +3,11 @@
 
 {% block content %}
   <body>
-  <!-- Header --> 
+    <!-- Head -->  
+    {% include 'store/head.html' %}
+    <!-- 네비게이션바 -->
+    {% include "layout/navbar.html" %}    
+    <!-- Header -->  
     {% include 'store/header.html' %}
     <!-- Section-->
     <section class="py-5">

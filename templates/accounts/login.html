@@ -1,20 +1,39 @@
 {% extends "layout/base.html" %}
 {% block content %}
-  <div class="container my-3">
-    <form method="post" action="{% url 'accounts:login' %}">
-      {% csrf_token %}
-      <input type="hidden" name="next" value="{{ next }}">
-      <!-- 로그인 성공후 이동되는 URL -->
-      {% include "layout/form_errors.html" %}
-      <div class="mb-3">
-        <label for="username">사용자ID</label>
-        <input type="text" class="form-control" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
+  {% include 'accounts/head.html' %}
+  <div class="d-flex flex-column vh-100 justify-content-between">
+    {% include 'layout/navbar.html' %}
+    <div class="wrapper">
+      <div class="logo">
+        <img src="https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-bird-symbols-png-logo-0.png" alt="">
       </div>
-      <div class="mb-3">
-        <label for="password">비밀번호</label>
-        <input type="password" class="form-control" name="password" id="password" value="{{ form.password.value|default_if_none:'' }}">
+      <div class="text-center mt-4 name">
+        Login
       </div>
-      <button type="submit" class="btn btn-primary">로그인</button>
-    </form>
-  </div>
-{% endblock %}
+      <form class="p-3 mt-3" method="post" action="{% url 'accounts:login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <!-- 로그인 성공후 이동되는 URL -->
+        {% include "layout/form_errors.html" %}
+        <div class="form-field d-flex align-items-center">
+          <span class="far fa-user"></span>
+          <input type="text" name="username" id="username" placeholder="아이디">
+        </div>
+        <div class="form-field d-flex align-items-center">
+          <span class="fas fa-key"></span>
+          <input type="password" name="password" id="pwd" placeholder="패스워드">
+        </div>
+        <button class="btn mt-3">Login</button>
+      </form>
+      <div class="text-center fs-6">
+        <a href="#">Forget password?</a>
+        or
+        <a href="#">Sign up</a>
+      </div>
+    </div>
+
+    <!-- Footer-->
+    {% include 'store/footer.html' %}
+
+  {% endblock %}
+</div>

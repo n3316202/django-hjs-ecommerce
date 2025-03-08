@@ -22,7 +22,7 @@
         </li> {% endcomment %}
         <li>
           {% if not user.is_authenticated %}
-          {% comment %} <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a> {% endcomment %}
+          <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
           {% endif %}
         </li>
         {% comment %} <li class="nav-item">

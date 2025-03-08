@@ -21,18 +21,12 @@
           <a class="nav-link active" aria-current="page" href="{% url 'accounts:login'%}">로그인</a>
           {% endif %}
         </li>
-        {% comment %} <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'boards:index'%}">게시판</a>
-        </li> {% endcomment %}
         <li>
           {% if not user.is_authenticated %}
           <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
           {% endif %}
         </li>
-        {% comment %} <li class="nav-item">
-          <a class="nav-link" href="#!">About</a>
-        </li> {% endcomment %}
-        {% comment %} <li class="nav-item dropdown">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
@@ -41,14 +35,17 @@
             <li>
               <hr class="dropdown-divider"/>
             </li>
-            <li>
-              <a class="dropdown-item" href="#">자바</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">파이썬</a>
-            </li>
+            {% comment %} div_13 {% endcomment %}
+            {% comment %} 카테고리 받아오기위한 추가 부분 {% endcomment %}
+            {% if categories %}
+              {% for category in categories %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'store:category'  category.name %}">{{category.name}}</a>
+                </li>
+              {% endfor %}
+            {% endif %}
           </ul>
-        </li> {% endcomment %}
+        </li> 
       </ul>
        <form class="d-flex">
         <a href="#" class="btn btn-outline-dark">

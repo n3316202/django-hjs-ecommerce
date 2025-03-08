@@ -29,8 +29,9 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% comment %} dev_13 {% endcomment %}
             <li>
-              <a class="dropdown-item" href="#">카테고리들</a>
+              <a class="dropdown-item" href="{% url 'store:category_summary' %}">카테고리들</a>
             </li>
             <li>
               <hr class="dropdown-divider"/>

@@ -1,0 +1,79 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+   <!-- Head -->  
+   {% include 'store/head.html' %}
+   <div class="d-flex flex-column vh-100 justify-content-between">
+   <!-- 네비게이션바 -->
+   {% include "layout/navbar.html" %}    
+   {% comment %} <!-- Header -->  
+   {% include 'store/header.html' %} {% endcomment %}
+
+   {% comment %} <div class="container text-center">
+     <div class="card mb-3">
+       <div class="row g-0">
+         <div class="col-md-6">
+           <img style="height:30rem;object-fit:cover;" src="{{product.image.url}}" class="img-fluid rounded-start" alt="..." />
+         </div>
+         <div class="col-md-6">
+           <div class="card-body">
+             <center>
+               <h5 class="card-title">{{product.name}}</h5>
+               <p class="card-text">{{product.description}}</p>   
+               {% if product.is_sale%}   
+               <div class="d-flex justify-content-center small text-warning mb-2">
+                 <div class="bi-star-fill"></div>
+                 <div class="bi-star-fill"></div>
+                 <div class="bi-star-fill"></div>
+                 <div class="bi-star-fill"></div>
+                 <div class="bi-star-fill"></div>
+               </div>
+               <!-- Product price-->
+               <strike> ${{ product.price }} </strike>
+               &nbsp; ${{product.sale_price}} 
+               {% else %} 
+                 ${{ product.price }} 
+               {%endif%}
+               <br><br><a class="btn btn-secondary" href="{% url 'store:home' %}">홈으로</a>
+             </center>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div> {% endcomment %}
+
+   <section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{product.image.url}}" alt="..."></div>
+            <div class="col-md-6">
+                <div class="small mb-1">SKU: BST-498</div>
+                <h1 class="display-5 fw-bolder">{{product.name}}</h1>
+                <div class="fs-5 mb-5">
+                  {% if product.is_sale %}
+                    <span class="text-decoration-line-through">{{product.price}}원</span>                    
+                    <span>{{product.price}}원</span>
+                  {% else %}
+                    {{product.price}}원
+                  {% endif %}   
+                </div>
+                <p class="lead">{{product.description}}</p>
+                <div class="d-flex">
+                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem">
+                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                        <i class="bi-cart-fill me-1"></i>
+                        Add to cart
+                    </button>
+                </div>
+                <br><a class="btn btn-secondary" href="{% url 'store:home' %}">홈으로</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+   <!-- Footer-->
+   {% include 'store/footer.html' %}
+ </div>
+{% endblock content %}

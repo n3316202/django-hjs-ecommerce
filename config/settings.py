@@ -127,3 +127,11 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# dev_2
+# 미디어 파일 경로 설정
+import os
+
+# http://127.0.0.1:8000/media/파일경로
+MEDIA_URL = "media/"  # ex) /media/photo1.png
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

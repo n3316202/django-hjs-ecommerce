@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "store",  # dev_1
+    "debug_toolbar",  # dev_1
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",  # dev_1
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -49,6 +51,12 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# dev_1
+# 현재 개발 환경의 IP주소를 입력한다.
+# 보통 djnago default local IP 주소는 127.0.0.1 이다
+INTERNAL_IPS = "127.0.0.1"
+
 
 ROOT_URLCONF = "config.urls"
 

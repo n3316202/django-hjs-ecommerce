@@ -3,7 +3,6 @@ from django.shortcuts import render
 
 
 # Create your views here.
-# dev_1
+# dev_4
 def home(request):
-
-    return HttpResponse("<h1>이제부터 쇼핑몰을 만들어 보자</h1>")
+    return render(request, "store/home.html", {})

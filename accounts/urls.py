@@ -15,5 +15,6 @@ urlpatterns = [
         auth_views.LoginView.as_view(template_name="accounts/login.html"),
         name="login",
     ),
-    path("logout/", views.logout_view, name="logout"),  # 코드 추가하기
+    path("logout/", views.log_out, name="logout"),  # 코드 추가하기
+    path("signup/", views.sign_up, name="signup"), 
 ]

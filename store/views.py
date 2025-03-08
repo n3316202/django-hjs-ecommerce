@@ -6,4 +6,4 @@ from django.shortcuts import render
 # dev_1
 def home(request):
 
-    return HttpResponse("<h1>안녕하세요<h1>")
+    return HttpResponse("<h1>이제부터 쇼핑몰을 만들어 보자</h1>")

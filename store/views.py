@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 
 from store.models import Category, Product
 from django.contrib import messages
+from django.db.models import Q
 
 
 # Create your views here.
@@ -60,3 +61,23 @@ def category(request, foo):
 def category_summary(request):
     categories = Category.objects.all()
     return render(request, "store/category_summary.html", {"categories": categories})
+
+
+def search(request):
+    # Determin if they filled out the form
+    if request.method == "POST":
+        searched = request.POST["searched"]
+
+        searched = Product.objects.filter(
+            Q(name__icontains=searched) | Q(description__icontains=searched)
+        )
+        print("서치=======", searched)
+
+        # Test for null
+        if not searched:
+            messages.success(request, "해당 상품이 없습니다....")
+            return render(request, "store/search.html", {})
+        else:
+            return render(request, "store/search.html", {"searched": searched})
+    else:
+        return render(request, "store/search.html", {})

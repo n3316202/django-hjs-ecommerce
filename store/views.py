@@ -19,8 +19,8 @@ def home(request):
 
 # dev_10
 def about(request):
-    # return render(request, "store/about.html", {})
-    return render(request, "orders/checkout.html", {})
+    return render(request, "store/about.html", {})
+    # return render(request, "orders/checkout.html", {})
 
 
 # dev_12

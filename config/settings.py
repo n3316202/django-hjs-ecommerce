@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "debug_toolbar",  # dev_1
     "accounts",  # dev_7
     "cart",  # dev_14
+    "django.contrib.humanize",  # dev_19
 ]
 
 MIDDLEWARE = [

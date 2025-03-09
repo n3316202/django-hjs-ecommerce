@@ -11,13 +11,16 @@ def cart_summary(request):
     cart = Cart(request)
     cart_products = cart.get_products()
     quantities = cart.get_quantities
+    # dev_19
+    totals = cart.cart_total()
 
     # dev_16 수정
     print(quantities, "==============")
+
     return render(
         request,
         "cart/cart_summary.html",
-        {"cart_products": cart_products, "quantities": quantities},
+        {"cart_products": cart_products, "quantities": quantities, "totals": totals},
     )
 
 

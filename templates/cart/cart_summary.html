@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% load static %}
-
+{% load humanize %} <!--dev_19 -->
 {% block content %}
 
   {% include 'store/head.html' %}
@@ -85,7 +85,8 @@
             </div>
           </div>
         {% endfor %}
-        <h3 class="text-center">Total:{{totals}}원</h3>
+        <!--dev_19-->
+        <h3 class="text-center">Total:{{totals|floatformat:"0"|default_if_none:"0"|intcomma}}원</h3>
         <br />
         <br />
         <br />

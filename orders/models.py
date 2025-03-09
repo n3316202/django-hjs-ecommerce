@@ -10,6 +10,7 @@ class Order(models.Model):
     amount_paid = models.PositiveBigIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    notes = models.TextField(max_length=1200, null=True)
 
     def __str__(self) -> str:
         return f"Order - {str(self.id)}"

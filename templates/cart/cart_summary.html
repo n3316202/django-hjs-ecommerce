@@ -85,8 +85,15 @@
             </div>
           </div>
         {% endfor %}
-        <!--dev_19-->
-        <h3 class="text-center">Total:{{totals|floatformat:"0"|default_if_none:"0"|intcomma}}원</h3>
+     
+        <!-- dev_23 -->
+        <div class="text-center">
+          <h3 class="text-center">Total:{{totals|floatformat:"0"|default_if_none:"0"|intcomma}}원</h3>
+          <form method="post" action="{% url 'orders:orders_create' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success text-center create-orders" >주문</button>
+          </form>
+        </div>
         <br />
         <br />
         <br />
@@ -96,6 +103,7 @@
     </div>
 
     <script>
+
       $(document).on('click', '.update-cart', function (e) {
         let productid = $(this).data('index');
         let qty = $('#select' + productid + ' ' + 'option:selected').text();

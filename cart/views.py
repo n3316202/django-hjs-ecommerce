@@ -68,6 +68,7 @@ def cart_delete(request):
         return response
 
 
+# dev_17
 def cart_update(request):
     cart = Cart(request)
 

@@ -139,5 +139,29 @@
           },
         });
       });
+        
+      //dev_17
+      $(document).on('click', '.update-cart', function (e) {
+        let productid = $(this).data('index');
+        let qty = $('#select' + productid + ' ' + 'option:selected').text();
+
+        $.ajax({
+          type: 'POST',
+          url: '{% url "cart:cart_update" %}',
+          data: {
+            product_id: $(this).data('index'),
+            product_qty: qty,
+            csrfmiddlewaretoken: '{{  csrf_token }}',
+            action: 'post'
+          },
+          success: function (json) {
+            console.log(json);
+            location.reload();
+          },
+          error: function (e) {
+            console.log(e);
+          }
+        });
+      });
     </script>
   {%endblock content%}

@@ -8,41 +8,6 @@
    <div class="d-flex flex-column vh-100 justify-content-between">
    <!-- 네비게이션바 -->
    {% include "layout/navbar.html" %}    
-   {% comment %} <!-- Header -->  
-   {% include 'store/header.html' %} {% endcomment %}
-
-   {% comment %} <div class="container text-center">
-     <div class="card mb-3">
-       <div class="row g-0">
-         <div class="col-md-6">
-           <img style="height:30rem;object-fit:cover;" src="{{product.image.url}}" class="img-fluid rounded-start" alt="..." />
-         </div>
-         <div class="col-md-6">
-           <div class="card-body">
-             <center>
-               <h5 class="card-title">{{product.name}}</h5>
-               <p class="card-text">{{product.description}}</p>   
-               {% if product.is_sale%}   
-               <div class="d-flex justify-content-center small text-warning mb-2">
-                 <div class="bi-star-fill"></div>
-                 <div class="bi-star-fill"></div>
-                 <div class="bi-star-fill"></div>
-                 <div class="bi-star-fill"></div>
-                 <div class="bi-star-fill"></div>
-               </div>
-               <!-- Product price-->
-               <strike> ${{ product.price }} </strike>
-               &nbsp; ${{product.sale_price}} 
-               {% else %} 
-                 ${{ product.price }} 
-               {%endif%}
-               <br><br><a class="btn btn-secondary" href="{% url 'store:home' %}">홈으로</a>
-             </center>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div> {% endcomment %}
 
    <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
@@ -62,9 +27,9 @@
                 <p class="lead">{{product.description}}</p>
                 <div class="d-flex">
                     <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem">
-                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                    <button class="btn btn-outline-dark flex-shrink-0" value="{{product.id}}" id="add-cart" type="button">
                         <i class="bi-cart-fill me-1"></i>
-                        Add to cart
+                        Add to cart(장바구니 담기)
                     </button>
                 </div>
                 <br><a class="btn btn-secondary" href="{% url 'store:home' %}">홈으로</a>
@@ -73,7 +38,29 @@
     </div>
 </section>
 
-   <!-- Footer-->
-   {% include 'store/footer.html' %}
- </div>
+<!-- Footer-->
+{% include 'store/footer.html' %}
+
+<script>
+  $(document).on('click', '#add-cart',function(e){
+    $.ajax({
+      type:"POST",
+      url:"{% url 'cart:cart_add' %}",
+      data:{
+        product_id: $('#add-cart').val(),
+        //product_qty: $('#qty-cart option:selected').text(),
+        product_qty: $('#inputQuantity').val(),
+        csrfmiddlewaretoken:'{{  csrf_token }}',
+        action: 'post'
+      },
+      success : function(json){
+        console.log(json)
+        $('#cart_quantity').text(json.qty)
+      },
+      error : function(e){
+        console.log(e)
+      }
+    })
+  });
+</script>
 {% endblock content %}

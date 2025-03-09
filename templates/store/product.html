@@ -56,6 +56,8 @@
       success : function(json){
         console.log(json)
         $('#cart_quantity').text(json.qty)
+        //추가 dev_20
+        location.reload();
       },
       error : function(e){
         console.log(e)

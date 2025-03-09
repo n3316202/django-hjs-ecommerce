@@ -10,7 +10,7 @@ class Order(models.Model):
     amount_paid = models.PositiveBigIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    notes = models.TextField(max_length=1200, null=True)
+    notes = models.TextField(max_length=1200, null=True, blank=True)
 
     def __str__(self) -> str:
         return f"Order - {str(self.id)}"
@@ -33,3 +33,18 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
+
+
+class ShippingAddress(models.Model):
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    address1 = models.CharField(max_length=255)
+    address2 = models.CharField(max_length=255,null=True, blank=True)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255, null=True, blank=True)
+    zipcode = models.CharField(max_length=255, null=True, blank=True)
+    country = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

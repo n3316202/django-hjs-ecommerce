@@ -9,6 +9,8 @@ from .models import Order, OrderItem
 # Create your views here.
 def orders_create(request):
 
+    cart = Cart(request)
+
     if request.POST:
 
         cart = Cart(request)
@@ -65,5 +67,4 @@ def orders_create(request):
             return redirect("/login")
 
     else:
-        messages.success(request, "Access denied")
-        return redirect("/")
+        return render(request, "orders/create.html", {"cart": cart})

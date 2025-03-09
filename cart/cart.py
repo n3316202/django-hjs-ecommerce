@@ -1,3 +1,6 @@
+from store.models import Product
+
+
 class Cart:
     def __init__(self, request):
         self.session = request.session
@@ -36,3 +39,19 @@ class Cart:
 
     def save(self):
         self.session.modified = True  # 세션 저장
+
+    # dev_16 함수 이름및 수정
+    def get_products(self):
+
+        # Get ids from cart
+        product_ids = self.cart.keys()
+
+        # use ids to lookup products in database model
+        products = Product.objects.filter(id__in=product_ids)
+
+        # Return those looked up products
+        return products
+
+    def get_quantities(self):
+        quantities = self.cart
+        return quantities

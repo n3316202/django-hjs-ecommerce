@@ -9,16 +9,15 @@ from store.models import Product
 def cart_summary(request):
     # Get the cart
     cart = Cart(request)
-    cart_products = cart.get_prods()
-    quantities = cart.get_quants
+    cart_products = cart.get_products()
+    quantities = cart.get_quantities
 
-    # 추가
-    totals = cart.cart_total()
-
+    # dev_16 수정
+    print(quantities, "==============")
     return render(
         request,
-        "cart/.html",
-        {"cart_products": cart_products, "quantities": quantities, "totals": totals},
+        "cart/cart_summary.html",
+        {"cart_products": cart_products, "quantities": quantities},
     )
 
 

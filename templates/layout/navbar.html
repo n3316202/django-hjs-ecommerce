@@ -49,7 +49,8 @@
         </li> 
       </ul>
        <form class="d-flex">
-        <a href="#" class="btn btn-outline-dark">
+        {% comment %} dev_16 {% endcomment %}
+        <a href="{% url 'cart:cart_summary'%}" class="btn btn-outline-dark">
           <i class="bi-cart-fill me-1"></i>
           Cart
           <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">{{cart|length}}</span>

@@ -1,5 +1,3 @@
-from decimal import Decimal
-from itertools import product
 from cart.models import CartItem
 from store.models import Product
 from store.models import Product
@@ -103,7 +101,6 @@ class Cart:
 
         self.save()
 
-        # dev_40
         # Deal with logged in user
         if self.request.user.is_authenticated:
 
@@ -168,21 +165,20 @@ class Cart:
             print(cart_item)
             cart_item.quantity = int(quantity)
             cart_item.save()
-    
-    # dev_24
-    def __iter__(self):
-        '''
+
+        # dev_24
+        # def __iter__(self):
+        """
         이터레이터 직접구현:카트에서 써먹으면 그 진까를 알수 있음
-        '''
-        product_ids = self.cart.keys()
-        #
-        products = Product.objects.filter(id__in=product_ids)
-        cart = self.cart.copy()
-        
-        for product in products:
-            cart[str(product.id)]['product'] = product
-        
-        for item in cart.values():
-            item['price'] = Decimal(item['price'])
-            item['total_price'] = 
-        
+        """
+        # product_ids = self.cart.keys()
+
+        # products = Product.objects.filter(id__in=product_ids)
+        # cart = self.cart.copy()
+
+        # for product in products:
+        #     cart[str(product.id)]["product"] = product
+
+        # for item in cart.values():
+        #    item['price'] = Decimal(item['price'])
+        #    item['total_price'] =

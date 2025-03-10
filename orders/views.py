@@ -4,6 +4,8 @@ from cart.cart import Cart
 from django.contrib import messages
 from .models import Order, OrderItem
 
+import pandas as pd
+
 
 # dev_23
 # Create your views here.
@@ -67,4 +69,19 @@ def orders_create(request):
             return redirect("/login")
 
     else:
+        # dev_24
+        
+        if request.user.is_authenticated:
+
+            # Get the current user profile
+            cart, created = CartModel.objects.get_(user=request.user)
+            print(cart)
+            cart_item, created = CartItem.objects.get_or_create(
+                cart=cart, product_id=product_id
+            )
+            print(cart_item)
+            cart_item.delete()
+        
+        cart_df = pd.DataFrame(cart)
+        print(cart_df)
         return render(request, "orders/create.html", {"cart": cart})

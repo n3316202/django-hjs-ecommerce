@@ -2,7 +2,9 @@ from django.shortcuts import redirect, render
 
 from cart.cart import Cart
 from django.contrib import messages
-from .models import Order, OrderItem
+
+from orders.forms import ShippingForm
+from .models import Order, OrderItem, ShippingAddress
 
 import pandas as pd
 from cart.models import Cart as CartModel, CartItem
@@ -75,4 +77,15 @@ def orders_create(request):
         # DataFrame을 딕셔너리 리스트로 변환
         dic_orders = df_order.to_dict(orient="records")
         total_price = cart.cart_total()
-        return render(request, "orders/create.html", {"dic_orders": dic_orders,"total_price":total_price })
+
+        # Get Current uer's shipping Info
+        shipping_user = ShippingAddress.objects.get(id=request.user.id)
+
+        # Get User's Shipping Form
+        form = ShippingForm(request.POST or None, instance=shipping_user)
+
+        return render(
+            request,
+            "orders/create.html",
+            {"dic_orders": dic_orders, "total_price": total_price, "form": form},
+        )

@@ -2,6 +2,7 @@ from cart.models import CartItem
 from store.models import Product
 from store.models import Product
 from cart.models import Cart as CartModel
+import pandas as pd
 
 
 class Cart:
@@ -182,3 +183,58 @@ class Cart:
         # for item in cart.values():
         #    item['price'] = Decimal(item['price'])
         #    item['total_price'] =
+
+    def get_data_frame_products(self):
+
+        # {"4": 2, "3": 2}
+
+        if self.request.user.is_authenticated:
+
+            # DataFrame 변환
+
+            product_ids = self.cart.keys()
+            products = Product.objects.filter(id__in=product_ids)
+            print(products)
+
+            # 상품 목록 가져오기
+            # 데이터프레임 변환
+
+            data = [
+                {
+                    "id": product.id,
+                    "name": product.name,
+                    "price": product.price,
+                    "is_sale": product.is_sale,
+                    "sale_price": product.sale_price,
+                    "image": product.image,
+                }
+                for product in products
+            ]
+
+            df = pd.DataFrame(data)
+
+            print(df)
+
+            # 가격 결정 (할인 여부에 따라 sale_price 사용)
+            df["final_price"] = df.apply(
+                lambda row: row["sale_price"] if row["is_sale"] == 1 else row["price"],
+                axis=1,
+            )
+
+            print(df)
+
+            df_cart = pd.DataFrame(list(self.cart.items()), columns=["id", "quantity"])
+
+            # key를 정수형으로 변환 (필요한 경우)
+            df_cart["id"] = df_cart["id"].astype(int)
+
+            # inner (기본값) → 공통된 값만 유지 (교집합)
+            merged_df = pd.merge(df, df_cart, on="id", how="inner")
+            print(merged_df)
+
+            # 갯수 2를 곱한 total 컬럼 추가
+            # df["total"] = df["final_price"] * 2
+
+            merged_df["sum_price"] = merged_df["quantity"] * merged_df["final_price"]
+            print(merged_df)
+            return merged_df

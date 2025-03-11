@@ -4,11 +4,11 @@
 
 {% block content %}
 
-  {% include 'store/head.html' %}
+{% include 'store/head.html' %}
   <div class="d-flex flex-column vh-100 justify-content-between">
 
     <!-- 네비게이션바 -->
-    {% include "layout/navbar.html" %}
+{% include "layout/navbar.html" %}
 
 
  <!-- Header -->
@@ -97,18 +97,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for order in dic_orders %}
                                     <tr>
                                         <th scope="row">
                                             <div class="d-flex align-items-center mt-2">
-                                                <img src="img/vegetable-item-2.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                                <img src="{{order.image.url}}" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
                                             </div>
                                         </th>
-                                        <td class="py-5">Awesome Brocoli</td>
-                                        <td class="py-5">$69.00</td>
-                                        <td class="py-5">2</td>
-                                        <td class="py-5">$138.00</td>
+                                        <td class="py-5 text-center">{{order.name}}</td>
+                                        <td class="py-5">{{order.price}}</td>
+                                        <td class="py-5 text-center">{{order.quantity}}</td>
+                                        <td class="py-5">{{order.sum_price}}</td>
                                     </tr>
-                                    <tr>
+                                    {% endfor %}
+                                    {% comment %} <tr>
                                         <th scope="row">
                                             <div class="d-flex align-items-center mt-2">
                                                 <img src="img/vegetable-item-5.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
@@ -129,7 +131,7 @@
                                         <td class="py-5">$69.00</td>
                                         <td class="py-5">2</td>
                                         <td class="py-5">$138.00</td>
-                                    </tr>
+                                    </tr> {% endcomment %}
                                     <tr>
                                         <th scope="row">
                                         </th>
@@ -140,10 +142,10 @@
                                         </td>
                                         <td class="py-5">
                                             <div class="py-3 border-bottom border-top">
-                                                <p class="mb-0 text-dark">$414.00</p>
+                                                <p class="mb-0 text-dark">${{total_price}}</p>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr> 
                                     <tr>
                                         <th scope="row">
                                         </th>
@@ -175,7 +177,7 @@
                                         <td class="py-5"></td>
                                         <td class="py-5">
                                             <div class="py-3 border-bottom border-top">
-                                                <p class="mb-0 text-dark">$135.00</p>
+                                                <p class="mb-0 text-dark">${{total_price}}</p>
                                             </div>
                                         </td>
                                     </tr>

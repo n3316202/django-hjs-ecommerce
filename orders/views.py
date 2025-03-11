@@ -5,6 +5,7 @@ from django.contrib import messages
 from .models import Order, OrderItem
 
 import pandas as pd
+from cart.models import Cart as CartModel, CartItem
 
 
 # dev_23
@@ -69,19 +70,9 @@ def orders_create(request):
             return redirect("/login")
 
     else:
-        # dev_24
-        
-        if request.user.is_authenticated:
 
-            # Get the current user profile
-            cart, created = CartModel.objects.get_(user=request.user)
-            print(cart)
-            cart_item, created = CartItem.objects.get_or_create(
-                cart=cart, product_id=product_id
-            )
-            print(cart_item)
-            cart_item.delete()
-        
-        cart_df = pd.DataFrame(cart)
-        print(cart_df)
-        return render(request, "orders/create.html", {"cart": cart})
+        df_order = cart.get_data_frame_products()
+        # DataFrame을 딕셔너리 리스트로 변환
+        dic_orders = df_order.to_dict(orient="records")
+        total_price = cart.cart_total()
+        return render(request, "orders/create.html", {"dic_orders": dic_orders,"total_price":total_price })

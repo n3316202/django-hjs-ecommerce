@@ -63,4 +63,5 @@ class ShippingAddress(models.Model):
         verbose_name_plural = "배송주소"
 
     def __str__(self):
-        return f"배송주소 - {str(self.id)}"
+        # return f"배송주소 - {str(self.id)}"
+        return f"{self.user.username} - {self.address1}"

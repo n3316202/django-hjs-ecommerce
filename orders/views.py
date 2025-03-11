@@ -10,60 +10,87 @@ import pandas as pd
 from cart.models import Cart as CartModel, CartItem
 
 
-# dev_23
+# dev_24
 # Create your views here.
 def orders_create(request):
-
-    cart = Cart(request)
 
     if request.POST:
 
         cart = Cart(request)
-        cart_products = cart.get_products
-        quantiles = cart.get_quantities
-        cart_delete = cart.delete
+        # cart_products = cart.get_products
+        # quantiles = cart.get_quantities
+        # cart_delete = cart.delete
 
-        totals = cart.cart_total()
-        print(totals)
+        # totals = cart.cart_total()
+        # print(totals)
 
-        # Gether Order Info
         if request.user.is_authenticated:
+
             # logged in
             user = request.user
+
+            # 카트 데이타 프레임 가져오기
+            df_cart = cart.get_data_frame_products()
+
             # Create Order
             create_order = Order(user=user)
-            create_order.amount_paid = totals
+            create_order.amount_paid = df_cart["sum_price"].sum()
             create_order.save()
 
-            # dev_23
             # Add Order Items
             # Get the oorder ID
             order_id = create_order.pk
 
-            # Get product info
-            for product in cart_products():
-                product_id = product.id
-                # Get product price
-                if product.is_sale:
-                    price = product.sale_price
-                else:
-                    price = product.price
+            for index, row in df_cart.iterrows():
+                # Create Order Item
+                create_order_item = OrderItem(
+                    order_id=order_id,
+                    product_id=row["id"],
+                    quantity=row["quantity"],
+                    price=row["final_price"],
+                )
+                create_order_item.save()
 
-                # Get quantity
-                for key, value in quantiles().items():
-                    if int(key) == product.id:
-                        # Create Order Item
-                        create_order_item = OrderItem(
-                            order_id=order_id,
-                            product_id=product_id,
-                            quantity=value,
-                            price=price,
-                        )
-                        create_order_item.save()
+            # Get product info
+            # for product in cart_products():
+            #     product_id = product.id
+            #     # Get product price
+            #     if product.is_sale:
+            #         price = product.sale_price
+            #     else:
+            #         price = product.price
+
+            # Get quantity
+            # for key, value in quantiles().items():
+            #     if int(key) == product.id:
+            #         # Create Order Item
+            #         create_order_item = OrderItem(
+            #             order_id=order_id,
+            #             product_id=product_id,
+            #             quantity=value,
+            #             price=price,
+            #         )
+            #         create_order_item.save()
 
             # Delete cart item(만약 카트도 지우고 싶다면)
-            for key in list(quantiles().keys()):
-                cart_delete(key)
+            # for key in list(quantiles().keys()):
+            #     cart_delete(key)
+
+            for key in list(cart.cart.keys()):
+                cart.delete(key)
+
+            # 배송지 업데이트
+            # Get Current uer's shipping Info
+            # shipping_user = ShippingAddress.objects.get(id=request.user.id)
+
+            # Get User's Shipping Form
+            form = ShippingForm(request.POST)
+
+            if form.is_valid():
+                shipping = form.save(commit=False)  # 저장은 하지 않고 객체만 생성
+                shipping.user = request.user  # ForeignKey 값 추가 (현재 로그인한 사용자)
+                shipping.save()  # 최종적으로 저장
+               
 
             messages.success(request, "주문이 완료 되었습니다.")
             return redirect("/")
@@ -73,6 +100,7 @@ def orders_create(request):
 
     else:
 
+        cart = Cart(request)
         df_order = cart.get_data_frame_products()
         # DataFrame을 딕셔너리 리스트로 변환
         dic_orders = df_order.to_dict(orient="records")

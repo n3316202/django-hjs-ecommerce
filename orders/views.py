@@ -59,7 +59,7 @@ def orders_create(request):
                 cart_delete(key)
 
             messages.success(request, "주문이 완료 되었습니다.")
-            return redirect("/")
+            return redirect("payment:process")  # 주문 완료후 결제 프로세스로 이동
         else:
             messages.success(request, "You Must be logged In To order the products")
             return redirect("/login")

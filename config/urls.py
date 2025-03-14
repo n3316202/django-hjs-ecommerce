@@ -10,6 +10,7 @@ urlpatterns = [
     path("account/", include("accounts.urls")),  # dev_7
     path("cart/", include("cart.urls")),  # dev_14
     path("orders/", include("orders.urls")),  # dev_23
+    path("payment/", include("payment.urls")),  # dev_25
 ]
 # dev_2
 if settings.DEBUG:

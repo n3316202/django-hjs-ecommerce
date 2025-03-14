@@ -17,12 +17,6 @@ def orders_create(request):
     if request.POST:
 
         cart = Cart(request)
-        # cart_products = cart.get_products
-        # quantiles = cart.get_quantities
-        # cart_delete = cart.delete
-
-        # totals = cart.cart_total()
-        # print(totals)
 
         if request.user.is_authenticated:
 
@@ -75,7 +69,7 @@ def orders_create(request):
 
         else:
             messages.success(request, "You Must be logged In To order the products")
-            return redirect("/login")
+            return redirect("accounts:login")
 
     else:
 

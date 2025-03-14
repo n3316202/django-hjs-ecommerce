@@ -4,7 +4,8 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from orders import views
+from payment import views
+
 
 # dev_25
 app_name = "payment"

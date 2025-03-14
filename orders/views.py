@@ -21,59 +21,81 @@ def orders_create(request):
         if request.user.is_authenticated:
 
             # logged in
-            user = request.user
+            # user = request.user
 
-            # 카트 데이타 프레임 가져오기
-            df_cart = cart.get_data_frame_products()
+            # # 카트 데이타 프레임 가져오기
+            # df_cart = cart.get_data_frame_products()
 
-            # Create Order
-            create_order = Order(user=user)
-            create_order.amount_paid = df_cart["sum_price"].sum()
-            create_order.save()
+            # # Create Order
+            # create_order = Order(user=user)
+            # create_order.amount_paid = df_cart["sum_price"].sum()
+            # create_order.save()
 
-            # Add Order Items
-            # Get the oorder ID
-            order_id = create_order.pk
+            # # Add Order Items
+            # # Get the oorder ID
+            # order_id = create_order.pk
 
-            for index, row in df_cart.iterrows():
-                # Create Order Item
-                create_order_item = OrderItem(
-                    order_id=order_id,
-                    product_id=row["id"],
-                    quantity=row["quantity"],
-                    price=row["final_price"],
-                )
-                create_order_item.save()
+            # for index, row in df_cart.iterrows():
+            #     # Create Order Item
+            #     create_order_item = OrderItem(
+            #         order_id=order_id,
+            #         product_id=row["id"],
+            #         quantity=row["quantity"],
+            #         price=row["final_price"],
+            #     )
+            #     create_order_item.save()
 
-            for key in list(cart.cart.keys()):
-                cart.delete(key)
+            # for key in list(cart.cart.keys()):
+            #     cart.delete(key)
 
-            # 배송지 업데이트
+            # # 배송지 업데이트
+            # # Get Current uer's shipping Info
+            # # shipping_user = ShippingAddress.objects.get(id=request.user.id)
+
+            # # Get User's Shipping Form
+            # form = ShippingForm(request.POST)
+
+            # if form.is_valid():
+            #     shipping = form.save(commit=False)  # 저장은 하지 않고 객체만 생성
+            #     shipping.user = (
+            #         request.user
+            #     )  # ForeignKey 값 추가 (현재 로그인한 사용자)
+            #     shipping.save()  # 최종적으로 저장
+
+            # # dev_24
+            # messages.success(request, "주문이 완료 되었습니다.")
+            # request.session["order_id"] = order_id
+            # return redirect(
+            #     "payment:payment_process"
+            # )  # 주문 완료후 결제 프로세스로 이동
+
+            cart = Cart(request)
+            df_order = cart.get_data_frame_products()
+            # DataFrame을 딕셔너리 리스트로 변환
+            dic_orders = df_order.to_dict(orient="records")
+            total_price = cart.cart_total()
+
             # Get Current uer's shipping Info
-            # shipping_user = ShippingAddress.objects.get(id=request.user.id)
+            shipping_user = ShippingAddress.objects.get(id=request.user.id)
 
+            print(shipping_user)
             # Get User's Shipping Form
-            form = ShippingForm(request.POST)
+            form = ShippingForm(instance=shipping_user)
 
-            if form.is_valid():
-                shipping = form.save(commit=False)  # 저장은 하지 않고 객체만 생성
-                shipping.user = (
-                    request.user
-                )  # ForeignKey 값 추가 (현재 로그인한 사용자)
-                shipping.save()  # 최종적으로 저장
-
-            # dev_24
-            messages.success(request, "주문이 완료 되었습니다.")
-            request.session["order_id"] = order_id
-            return redirect(
-                "payment:payment_process"
-            )  # 주문 완료후 결제 프로세스로 이동
+            return render(
+                request,
+                "orders/create.html",
+                {"dic_orders": dic_orders, "total_price": total_price, "form": form},
+            )
 
         else:
             messages.success(request, "You Must be logged In To order the products")
             return redirect("accounts:login")
 
     else:
+
+        if not request.user.is_authenticated:
+            return redirect("accounts:login")  # 로그인 페이지로 리디렉트
 
         cart = Cart(request)
         df_order = cart.get_data_frame_products()

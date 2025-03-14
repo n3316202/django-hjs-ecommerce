@@ -88,12 +88,14 @@ def orders_create(request):
 
             if form.is_valid():
                 shipping = form.save(commit=False)  # 저장은 하지 않고 객체만 생성
-                shipping.user = request.user  # ForeignKey 값 추가 (현재 로그인한 사용자)
+                shipping.user = (
+                    request.user
+                )  # ForeignKey 값 추가 (현재 로그인한 사용자)
                 shipping.save()  # 최종적으로 저장
-               
 
             messages.success(request, "주문이 완료 되었습니다.")
-            return redirect("/")
+            return redirect("/")  # 주문이 완료 되었으니 결제 모듈로 리다이렉트 시킴
+
         else:
             messages.success(request, "You Must be logged In To order the products")
             return redirect("/login")

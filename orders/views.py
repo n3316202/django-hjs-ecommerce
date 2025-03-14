@@ -65,7 +65,9 @@ def orders_create(request):
             # dev_24
             messages.success(request, "주문이 완료 되었습니다.")
             request.session["order_id"] = order_id
-            return redirect("payment:process")  # 주문 완료후 결제 프로세스로 이동
+            return redirect(
+                "payment:payment_process"
+            )  # 주문 완료후 결제 프로세스로 이동
 
         else:
             messages.success(request, "You Must be logged In To order the products")

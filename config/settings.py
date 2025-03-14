@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "cart",  # dev_14
     "django.contrib.humanize",  # dev_19
     "orders",  # dev_23
+    "payment",  # dev_25
 ]
 
 MIDDLEWARE = [
@@ -60,8 +61,6 @@ MIDDLEWARE = [
 # 현재 개발 환경의 IP주소를 입력한다.
 # 보통 djnago default local IP 주소는 127.0.0.1 이다
 INTERNAL_IPS = "127.0.0.1"
-
-
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [

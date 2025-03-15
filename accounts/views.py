@@ -1,3 +1,5 @@
+import django
+import django.contrib
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -52,6 +54,7 @@ def login_user(request):
                     cart.add(product=item.product, quantity=item.quantity)
 
             messages.success(request, "You Have been logged in")
+
             return redirect("/")
         else:
             messages.success(request, ("There was an error, please try again"))

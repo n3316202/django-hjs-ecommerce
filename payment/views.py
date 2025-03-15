@@ -55,6 +55,12 @@ def payment_process(request):
             create_payment = Payment(order=create_order)
             create_payment.imp_uid = request.POST["imp_uid"]
             create_payment.save()
+
+            # 카트를 담고 있는 세션 지우기
+            # Delete cart item(만약 카트도 지우고 싶다면)
+            for key in list(cart.cart.keys()):
+                cart.delete(key)
+
             messages.success(request, "결재가 완료 되었습니다.")
             return HttpResponse("SUCCESS")
         else:

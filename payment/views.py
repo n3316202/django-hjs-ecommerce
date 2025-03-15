@@ -1,12 +1,14 @@
 from sre_constants import POSSESSIVE_REPEAT
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 
 from cart.cart import Cart
 from orders.forms import ShippingForm
-from orders.models import Order, ShippingAddress
+from orders.models import Order, OrderItem, ShippingAddress
 from django.contrib.auth.decorators import login_required
 
 from payment.models import Payment
+from django.contrib import messages
 
 
 # dev_25
@@ -21,10 +23,9 @@ def payment_process(request):
     if request.POST:
 
         cart = Cart(request)
-        df_order = cart.get_data_frame_products()
-        # DataFrame을 딕셔너리 리스트로 변환
-        dic_orders = df_order.to_dict(orient="records")
-        total_price = cart.cart_total()
+
+        # 카트 데이타 프레임 가져오기
+        df_cart = cart.get_data_frame_products()
 
         # if total_price == int(request.POST['paid_amount']): #테스트를 위하여 10으로 넣고 대입입
         if 100 == int(request.POST["paid_amount"]):
@@ -33,40 +34,29 @@ def payment_process(request):
 
             # create order
             create_order = Order(user=user)
-            create_order.amount_paid = total_price
+            create_order.amount_paid = df_cart["sum_price"].sum()
             create_order.save()
 
-            #OrderItem를 저장 
+            # Add Order Items
+            # Get the oorder ID
             order_id = create_order.pk
-            
-            
-            
-            
-            
-            #결재 데이터 저장
+
+            for index, row in df_cart.iterrows():
+                # Create Order Item
+                create_order_item = OrderItem(
+                    order_id=order_id,
+                    product_id=row["id"],
+                    quantity=row["quantity"],
+                    price=row["final_price"],
+                )
+                create_order_item.save()
+
+            # 결재 데이터 저장
             create_payment = Payment(order=create_order)
-            create_payment.imp_uid = request.POST['imp_uid']
+            create_payment.imp_uid = request.POST["imp_uid"]
             create_payment.save()
-            
-            
-        # Get Current uer's shipping Info
-        # shipping_user = ShippingAddress.objects.get(id=request.user.id)
-        # print(shipping_user)
-        # Get User's Shipping Form
-        # form = ShippingForm(instance=shipping_user)
-        # form = ShippingForm(request.POST or None, instance=shipping_user)
 
-        # if form.is_valid():
-        #     form.save()
-        #     #Save shipping form
-        #     form.save()
-
-    # order_id = request.session.get("order_id", None)
-    # print(order_id)
-    # order = get_object_or_404(Order, id=order_id)
-    # print(order)
-
-    # if request.method == "POST":
-    #     pass
-    # else:
-    #     return render(request, "payment/process.html", {"order": order})
+            return HttpResponse("SUCCESS")
+        else:
+            messages.success(request, "결재 금액이 맞지않아 취소 되었습니다.")
+            return redirect("/")

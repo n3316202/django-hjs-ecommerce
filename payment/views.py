@@ -55,7 +55,7 @@ def payment_process(request):
             create_payment = Payment(order=create_order)
             create_payment.imp_uid = request.POST["imp_uid"]
             create_payment.save()
-
+            messages.success(request, "결재가 완료 되었습니다.")
             return HttpResponse("SUCCESS")
         else:
             messages.success(request, "결재 금액이 맞지않아 취소 되었습니다.")

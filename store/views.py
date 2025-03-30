@@ -63,6 +63,7 @@ def category_summary(request):
     return render(request, "store/category_summary.html", {"categories": categories})
 
 
+# dev_21
 def search(request):
     # Determin if they filled out the form
     if request.method == "POST":

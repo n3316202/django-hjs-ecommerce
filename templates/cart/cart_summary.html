@@ -96,6 +96,7 @@
     </div>
 
     <script>
+     //dev_17
       $(document).on('click', '.update-cart', function (e) {
         let productid = $(this).data('index');
         let qty = $('#select' + productid + ' ' + 'option:selected').text();
@@ -126,54 +127,7 @@
           type: 'POST',
           url: '{% url "cart:cart_delete" %}',
           data: {
-            product_id: $(this).data('index'),
-    
-            csrfmiddlewaretoken: '{{  csrf_token }}',
-            action: 'post',
-          },
-          success: function (json) {
-            console.log(json);
-            location.reload(); //페이지 새로 고침
-          },
-          error: function (e) {
-            console.log(e);
-          },
-        });
-      });
-        
-      //dev_17
-      $(document).on('click', '.update-cart', function (e) {
-        let productid = $(this).data('index');
-        let qty = $('#select' + productid + ' ' + 'option:selected').text();
-
-        $.ajax({
-          type: 'POST',
-          url: '{% url "cart:cart_update" %}',
-          data: {
-            product_id: $(this).data('index'),
-            product_qty: qty,
-            csrfmiddlewaretoken: '{{  csrf_token }}',
-            action: 'post'
-          },
-          success: function (json) {
-            console.log(json);
-            location.reload();
-          },
-          error: function (e) {
-            console.log(e);
-          }
-        });
-      });
-
-      $(document).on('click', '.delete-product', function (e) {
-        let productid = $(this).data('index');
-    
-        $.ajax({
-          type: 'POST',
-          url: '{% url "cart:cart_delete" %}',
-          data: {
-            product_id: $(this).data('index'),
-    
+            product_id: $(this).data('index'),    
             csrfmiddlewaretoken: '{{  csrf_token }}',
             action: 'post',
           },

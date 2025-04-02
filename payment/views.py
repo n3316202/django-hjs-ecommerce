@@ -27,7 +27,7 @@ def payment_process(request):
         # 카트 데이타 프레임 가져오기
         df_cart = cart.get_data_frame_products()
 
-        # if total_price == int(request.POST['paid_amount']): #테스트를 위하여 10으로 넣고 대입입
+        # if total_price == int(request.POST['paid_amount']): #테스트를 위하여 10으로 넣고 대입
         if 100 == int(request.POST["paid_amount"]):
             # logged in
             user = request.user
